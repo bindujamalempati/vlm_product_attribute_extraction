@@ -1,0 +1,8 @@
+cd vlm_product_attribute_extraction
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+set PYTHONPATH=src
+python -m vlm_attr_extraction.train --config configs/train.yaml
+python -m vlm_attr_extraction.predict --model-path outputs/run_01/best_model.pt --image-path data/sample/images/sample_006.jpg --text "Yellow polka dot blouse with short sleeves in good condition"
+uvicorn vlm_attr_extraction.api.app:app --host 0.0.0.0 --port 8000

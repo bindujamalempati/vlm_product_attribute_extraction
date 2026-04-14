@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vlm-attribute-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vlm-attribute-api
+  template:
+    metadata:
+      labels:
+        app: vlm-attribute-api
+    spec:
+      containers:
+        - name: api
+          image: vlm-attribute-api:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PYTHONPATH
+              value: /app/src
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vlm-attribute-api-service
+spec:
+  selector:
+    app: vlm-attribute-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
